@@ -45,9 +45,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
         ),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.refresh),
+          FutureBuilder(
+            future: getWeatherInformation(),
+            builder: (context, snapshot) => IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.refresh),
+            ),
           )
         ],
       ),
@@ -80,8 +83,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
               snapshot.data?["list"][0]["weather"][0]["main"];
           final description =
               snapshot.data?["list"][0]["weather"][0]["description"];
-
-          print(list);
 
           return Padding(
             padding: const EdgeInsets.all(10.0),
@@ -171,10 +172,16 @@ class _WeatherScreenState extends State<WeatherScreen> {
                         child: Row(
                           children: [
                             for (int i = 0; i <= 4; i++)
-                              const HourlyForecastCard(
-                                icon: Icons.cloud,
-                                time: "09:00",
-                                value: "Cloudy",
+                              HourlyForecastCard(
+                                icon: list[i]["weather"][0]["main"] == "Clouds"
+                                    ? Icons.cloud
+                                    : currentWeather == "Rain"
+                                        ? Icons.cloudy_snowing
+                                        : Icons.sunny,
+                                time: list[i]["dt_txt"]
+                                    .toString()
+                                    .substring(11, 16),
+                                value: list[i]["weather"][0]["main"],
                               ),
                           ],
                         ),
