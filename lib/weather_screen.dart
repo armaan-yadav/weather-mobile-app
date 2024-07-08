@@ -45,12 +45,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
         ),
         centerTitle: true,
         actions: [
-          FutureBuilder(
-            future: getWeatherInformation(),
-            builder: (context, snapshot) => IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.refresh),
-            ),
+          IconButton(
+            onPressed: () {
+              setState(() {
+                getWeatherInformation();
+              });
+            },
+            icon: const Icon(Icons.refresh),
           )
         ],
       ),
